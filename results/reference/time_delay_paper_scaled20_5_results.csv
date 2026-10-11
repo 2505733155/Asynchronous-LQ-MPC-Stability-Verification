@@ -1,0 +1,6 @@
+thetaUpper,thetaDesign,invalidTheta,N_required,N_enforce,tauBest,lowFeasibleTau,lowFeasibleFound,lowInitTau,lowSearchFloor,problem,solver,mosekTol,mosekThreads,stateScale_x1,stateScale_x2,bestTauOverall
+0.99,0.989,0,347.114988877654,347.462103866532,-1,NaN,0,0.01,1e-06,-1,mosek,1e-08,1,20,5,-1
+0.97,0.969,0,354.279384932921,354.633664317854,-1,NaN,0,0.01,1e-06,-1,mosek,1e-08,1,20,5,-1
+0.95,0.949,0,361.745757639621,362.10750339726,-1,NaN,0,0.01,1e-06,-1,mosek,1e-08,1,20,5,-1
+0.93,0.929,0,369.533610333692,369.903143944026,-1,NaN,0,0.01,1e-06,-1,mosek,1e-08,1,20,5,-1
+0.9,0.899,0,381.865098998888,382.246964097887,-1,NaN,0,0.01,1e-06,-1,mosek,1e-08,1,20,5,-1

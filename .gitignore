@@ -1,0 +1,10 @@
+# Recomputed output and optional local certificate snapshots
+results/generated/*
+!results/generated/.gitkeep
+*.mat
+
+# MATLAB editor, build, and code-generation artifacts
+*.asv
+slprj/
+codegen/
+*.mex*
