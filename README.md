@@ -5,6 +5,38 @@ asynchronous MPC (AMPC). It contains the selected fixed-control-sampling-time
 configurations used in the numerical study: the proposed Rev3 piecewise-
 polynomial Lyapunov/SOS method and three adapted comparison approaches.
 
+## Associated manuscript and citation
+
+**SOS-Based Stability Verification for Asynchronous Execution of Constrained LQ-MPC**
+
+Feng Xu, Shengyi Liu, Shubo Yang, and Xiangyang Wang
+
+Institute for Aero Engine, Tsinghua University, Beijing 100084, China
+
+As of 12 October 2026, the manuscript is prepared for submission to
+*Automatica*. It has not yet been submitted to the journal, and no public
+arXiv identifier or journal DOI is available. The paper link and citation
+will be updated when the preprint becomes available.
+
+Until then, the manuscript can be identified as follows:
+
+```bibtex
+@unpublished{Xu2026AMPCStability,
+  author = {Xu, Feng and Liu, Shengyi and Yang, Shubo and Wang, Xiangyang},
+  title = {{SOS}-Based Stability Verification for Asynchronous Execution of Constrained {LQ-MPC}},
+  year = {2026},
+  note = {Manuscript prepared for submission}
+}
+```
+
+Code repository: [Asynchronous-LQ-MPC-Stability-Verification](https://github.com/2505733155/Asynchronous-LQ-MPC-Stability-Verification).
+
+The `v1.0-submission` tag preserves the initial code snapshot of 11 October
+2026. The `v1.0-github-preparation` tag adds this manuscript metadata on
+12 October 2026; executable code and reference CSVs are identical to the
+initial snapshot. These tags describe preparation snapshots, rather than
+confirming a journal submission or acceptance.
+
 ## Scope and dependencies
 
 The package requires MATLAB, YALMIP, and MOSEK. Its reference outputs were
