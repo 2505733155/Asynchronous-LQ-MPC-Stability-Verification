@@ -1,0 +1,205 @@
+{
+  "version": "hmpc-original-proof-2026-11-10",
+  "profile": "balanced",
+  "status": "Original-proof instantiation and actual-feedback closure independently verified; see technical derivation.",
+  "literal_original_theorem_for_actual_QP": false,
+  "classification": "Quantitative HMPC/Teel proof instantiation with actual-feedback input-history closure; not a literal equality of OCPs.",
+  "no_W_equation_used": true,
+  "no_new_sampling_theorem": true,
+  "reference_interface": {
+    "CT_gain_upper": 0.88,
+    "CT_to_Euler_error_upper": 1.01,
+    "CT_to_Euler_product": 0.8888,
+    "reference_to_actual_continuous_error_product": 0.31654676258992803,
+    "norm_scope": "These CT-stage constants use S, not the later Y metric.",
+    "family_scope": "Same Pc/Omega and genuine Euler family d=2/N. Rounded QP is NOT asserted identical to it."
+  },
+  "fixed_reference": {
+    "T_H": 2,
+    "N": 2,
+    "d": 1,
+    "Qc": [
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        0.0001
+      ]
+    ],
+    "Rc": 0.1,
+    "Pc": [
+      [
+        "2678627933778297/1250000000000000",
+        "6122820304631229/5000000000000000"
+      ],
+      [
+        "6122820304631229/5000000000000000",
+        "6997785696560901/5000000000000000"
+      ]
+    ],
+    "Omega_level": 0.003
+  },
+  "reference_gain_exact": [
+    "-6558227786096677268907126887421/8031505606343076690407126887421",
+    "-14054177271256832459314253774842/8031505606343076690407126887421"
+  ],
+  "actual_gain_exact": {
+    "ideal_rounded_QP": [
+      "-1730285/2120963",
+      "-570801/326302"
+    ],
+    "stored_PWA": [
+      "-203950398946139/250000000000000",
+      "-1749302793118031/1000000000000000"
+    ]
+  },
+  "sampling": {
+    "Y": [
+      [
+        "1",
+        "49/50"
+      ],
+      [
+        "49/50",
+        "892/625"
+      ]
+    ],
+    "q_lower": "10197128192614957137309391924595683668367203/8031505606343076690407126887421000000000000",
+    "PB_Y_norm_upper": "597327380923/500000000000",
+    "history_slope_C_upper": "32255008842170633833524936717086185380893487/8031505606343076690407126887421000000000000",
+    "theta_allocation": "47/50",
+    "input_allocation": "1/25",
+    "split_epsilon": "1/100",
+    "alpha3_coefficient": "10197128192614957137309391924595683668367203/200787640158576917260178172185525000000000000",
+    "gamma_theta_slope": "959487641741060211054924004447303800813916600/479265025052902985453541420455997132413258541",
+    "gamma_input_slope": "479743820870530105527462002223651900406958300/10197128192614957137309391924595683668367203",
+    "gamma1_slope": "3257755893059234017186018608425704723470242187/803150560634307669040712688742100000000000000",
+    "gamma2_slope": "1419471904396940078390739631259042/8031505606343076690407126887421",
+    "this_witness_strict_period_threshold": 0.12314443185536447,
+    "checked_fixed_period_interval_upper": 0.12,
+    "eq18_multiplier_at_upper": 0.9744654970753556,
+    "reference_ISS_gain_Y_upper": 48,
+    "actual_reference_error_Y_upper": 0.0008,
+    "actual_reference_errors_Y_diagnostic": {
+      "ideal_rounded_QP": 0.0007997729,
+      "stored_PWA": 0.0007997729
+    },
+    "actual_feedback_history_gain_upper": 0.0768,
+    "combined_history_gain_upper": 0.9744654970753556,
+    "history_length": "3h after actual-input feedback closure"
+  },
+  "sampled_actual_feedback_error_closed": true,
+  "domain": {
+    "bounding_matrix_Pbar": "1.01 Pc, proof bound only; terminal Pc and Omega unchanged",
+    "Euler_d1_policy_residual": [
+      [
+        "333266403072676548765579802534543568419021679/31250000000000000000000000000000000000000000000",
+        "178288540811831504356083074432724313260108691/125000000000000000000000000000000000000000000000"
+      ],
+      [
+        "178288540811831504356083074432724313260108691/125000000000000000000000000000000000000000000000",
+        "1479731482133102989995612788362973986289072039/500000000000000000000000000000000000000000000000"
+      ]
+    ],
+    "uniform_CT_and_all_Euler_N_ge_2_domain": "x^T Pbar x < .003",
+    "prediction_input_square_upper": 0.4240658132115906,
+    "Pbar_le_mu_Y": 3.522,
+    "Y_level": 0.00085,
+    "Y_eigenvalue_upper": "4433215912201/2000000000000",
+    "initial_Euclidean_ball": 0.0195,
+    "input_disturbance_bound": 0.00025,
+    "physical_trajectory_gain_upper": 209.19449568658544,
+    "zero_disturbance_statement": "For fixed h in the checked interval: x0^T Y x0<=level remains in it and x(t)->0; no within-hold monotonicity is claimed.",
+    "scope_upper_bounds": {
+      "fixed_original_terminal_set": 0.720081,
+      "fixed_cost_horizon_any_admissible_terminal_design": 2.08
+    },
+    "upper_bound_provenance": "Previously derived necessary reference-feasibility bounds, not maximum actual ROA or all-HMPC bounds."
+  },
+  "original_route_candidate_grid_points": [
+    0.1
+  ],
+  "ten_points": [
+    {
+      "h": 0.1,
+      "this_witness_eq18_multiplier": 0.8120545808961297,
+      "candidate_original_route_pass": true,
+      "initial_Euclidean_ball": 0.0195
+    },
+    {
+      "h": 0.2,
+      "this_witness_eq18_multiplier": 1.6241091617922594,
+      "candidate_original_route_pass": false,
+      "initial_Euclidean_ball": null
+    },
+    {
+      "h": 0.3,
+      "this_witness_eq18_multiplier": 2.436163742688389,
+      "candidate_original_route_pass": false,
+      "initial_Euclidean_ball": null
+    },
+    {
+      "h": 0.4,
+      "this_witness_eq18_multiplier": 3.248218323584519,
+      "candidate_original_route_pass": false,
+      "initial_Euclidean_ball": null
+    },
+    {
+      "h": 0.5,
+      "this_witness_eq18_multiplier": 4.060272904480648,
+      "candidate_original_route_pass": false,
+      "initial_Euclidean_ball": null
+    },
+    {
+      "h": 0.6,
+      "this_witness_eq18_multiplier": 4.872327485376778,
+      "candidate_original_route_pass": false,
+      "initial_Euclidean_ball": null
+    },
+    {
+      "h": 0.7,
+      "this_witness_eq18_multiplier": 5.684382066272907,
+      "candidate_original_route_pass": false,
+      "initial_Euclidean_ball": null
+    },
+    {
+      "h": 0.8,
+      "this_witness_eq18_multiplier": 6.496436647169038,
+      "candidate_original_route_pass": false,
+      "initial_Euclidean_ball": null
+    },
+    {
+      "h": 0.9,
+      "this_witness_eq18_multiplier": 7.308491228065167,
+      "candidate_original_route_pass": false,
+      "initial_Euclidean_ball": null
+    },
+    {
+      "h": 1.0,
+      "this_witness_eq18_multiplier": 8.120545808961296,
+      "candidate_original_route_pass": false,
+      "initial_Euclidean_ball": null
+    }
+  ],
+  "controller_data_identity_checked": true,
+  "sources": [
+    {
+      "path": "src/hmpc/verify_hmpc_original_conditions.py",
+      "sha256": "9217a9cf7e2223360a1de5a9e22d54a7c5e327ab6aa6eca07d4a98d6e9c26664"
+    },
+    {
+      "path": "src/hmpc/verify_hmpc_reference.py",
+      "sha256": "d5b711e35aa35d5bff7f21bf783b57e921d5ae9ea2439600809b937383881d48"
+    },
+    {
+      "path": "data/double_integrator/double_integrator_qp_data.m",
+      "sha256": "94c2f617828e02b5ad66f3eea59368392ecbdab3d31f967fb888cdc65aab0219"
+    },
+    {
+      "path": "data/double_integrator/answer_regions_input_only_legacy.m",
+      "sha256": "2e8a7b3e8831c6a2b454b6e6dfec8a1e4228a4f00642a00364092766aa92ced3"
+    }
+  ]
+}

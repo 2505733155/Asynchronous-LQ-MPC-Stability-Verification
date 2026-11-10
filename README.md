@@ -5,6 +5,9 @@ asynchronous MPC (AMPC). It contains the selected fixed-control-sampling-time
 configurations used in the numerical study: the proposed Rev3 piecewise-
 polynomial Lyapunov/SOS method and three adapted comparison approaches.
 
+The package also provides an algebraic CT-reference analysis of the same
+actual controller for comparison with hypersampled MPC (HMPC).
+
 ## Associated manuscript and citation
 
 **SOS-Based Stability Verification for Asynchronous Execution of Constrained LQ-MPC**
@@ -13,9 +16,8 @@ Feng Xu, Shengyi Liu, Shubo Yang, and Xiangyang Wang
 
 Institute for Aero Engine, Tsinghua University, Beijing 100084, China
 
-As of 12 October 2026, the manuscript is prepared for submission to
-*Automatica*. It has not yet been submitted to the journal, and no public
-manuscript link or journal DOI is available. The paper link and citation
+The manuscript was submitted to *Automatica* on 15 October 2026 and remains
+unpublished. No public manuscript link or journal DOI is currently available. The paper link and citation
 will be updated when a public manuscript link or publication details become
 available.
 
@@ -26,7 +28,7 @@ Until then, the manuscript can be identified as follows:
   author = {Xu, Feng and Liu, Shengyi and Yang, Shubo and Wang, Xiangyang},
   title = {{SOS}-Based Stability Verification for Asynchronous Execution of Constrained {LQ-MPC}},
   year = {2026},
-  note = {Manuscript prepared for submission}
+  note = {Unpublished manuscript submitted to Automatica}
 }
 ```
 
@@ -40,7 +42,9 @@ confirming a journal submission or acceptance.
 
 ## Scope and dependencies
 
-The package requires MATLAB, YALMIP, and MOSEK. Its reference outputs were
+The SOS/LMI implementations require MATLAB, YALMIP, and MOSEK. The HMPC
+reference checkers require only Python 3 and its standard library. The MATLAB
+reference outputs were
 generated and checked in the following software environment.
 
 | Component | Validated version | Role |
@@ -48,8 +52,8 @@ generated and checked in the following software environment.
 | MATLAB | 24.2.0.3212159 (R2024b) Update 9 | Computing platform |
 | YALMIP | R20250626 (26 June 2025) | SOS/LMI modeling |
 | MOSEK MATLAB Toolbox and solver | 11.2.1 (build 2026-06-01) | SDP solver |
-| Optimization Toolbox | 24.2 | Required by the proposed, PWQ, and KKT-lifted routines (`linprog` or `quadprog`) |
-| Control System Toolbox | 24.2 | Optional: supplies `dare` for the KKT routine; the package otherwise uses its fixed-point fallback |
+| Optimization Toolbox | 24.2 | Required for polyhedral checks (`linprog`); the two-variable box QP uses KKT enumeration |
+| Control System Toolbox | 24.2 | Not required by the corrected KKT entry; the numerical QP matrices are supplied directly |
 | Parallel Computing Toolbox | 24.2 | Optional: accelerates the Rev3 scan; the package otherwise runs serially |
 
 The YALMIP version is the value returned by `yalmip('version')`. The validated
@@ -108,7 +112,7 @@ Individual entry points are in `src/proposed/`, `src/pwq/`,
 | Proposed Rev3 piecewise-polynomial Lyapunov/SOS | `src/proposed/run_rev3_unbounded_final_physdense.m` | `results/reference/proposed_rev3_paper_results.csv` |
 | PWQ Lyapunov SDP margin sweep | `src/pwq/run_pwq_rev1_mosek_paper_margin_sweep.m` | `results/reference/pwq_paper_margin_sweep_results.csv` |
 | Sampled-data PWA time-delay LMI | `src/time_delay/run_time_delay_mosek_scaled_diag.m` | `results/reference/time_delay_paper_scaled20_5_results.csv` |
-| KKT-lifted SOS global direct attempt | `src/kkt/run_kkt_lifted_sos_standard_mpc_global_scaled20_5_attempt.m` | `results/reference/kkt_global_paper_scaled20_5_results.csv` |
+| KKT-lifted SOS global direct attempt | `src/kkt/run_kkt_lifted_sos_standard_mpc_global_scaled20_5_attempt.m` | `results/reference/kkt_global_paper_scaled20_5_qp4dp_grid10_results.csv` |
 
 The proposed configuration uses `d_V=4`, `d_m=2`,
 `epsilon=alpha=1e-2`, `T_sc=0.1:0.1:1.0`, a common state scaling
@@ -170,6 +174,94 @@ constraints, complement margin, and Chebyshev radii). The time-delay
 `N_required` and `N_enforce` differences were approximately 0.17%, within the
 data-precision effect stated above. All reference CSVs are retained unchanged.
 
+## Numerical controller data (consistency correction)
+
+The archived seven-region feedback remains unchanged. Its nominal design uses
+Euler prediction with `Ap=[1 1;0 1]`, `Bp=[0;1]`, horizon two,
+`Q=diag(1,0)`, `R=0.1`, and a DARE terminal cost. The numerical controller is
+defined by the normalized condensed QP coefficients rounded to four decimals:
+
+```text
+H = [0.8365 0.3603; 0.3603 0.2059]
+Fux = [0.4624 1.2852; 0.1682 0.5285]
+min 0.5*U'*H*U + U'*Fux*x,  -1 <= U_i <= 1
+```
+
+`data/double_integrator/double_integrator_qp_data.m` is the shared source.
+The manuscript uses `Fxu=Fux'`. Physical execution remains the exact ZOH
+update of the continuous canonical double integrator. Rebuilding the nominal
+QP at full precision gives a slightly different feedback and is not an
+online equivalent of the archived table.
+
+The corrected KKT entry reads this shared QP, and its independent first-input
+checks enumerate all nine box-QP KKT patterns rather than using a potentially
+shadowed `quadprog`. From the package root, run these checks without solving an SDP:
+
+```matlab
+addpath('tests');
+test_double_integrator_qp_data;
+test_kkt_wrapper_environment;
+```
+
+They check the data, matrix orientation, numerical inputs, output naming,
+and wrapper environment restoration.
+The current corrected reference
+`kkt_global_paper_scaled20_5_qp4dp_grid10_results.csv` contains 20 cases:
+degrees two/four at `T_sc=0.1:0.1:1.0` s, matching the proposed and PWQ grids.
+Fourteen cases fail at the solver stage (ten code 4 numerical problems and
+four code -1 unknown errors); six degree-four candidates fail independent
+sampled-decrease checks. No case passes all checks. These outcomes do not
+imply closed-loop instability. The original corrected four-case reference
+`kkt_global_paper_scaled20_5_qp4dp_results.csv` is preserved; the new reference
+retains those four rows and adds only the 16 missing cases, run in MATLAB
+R2024b Update 10.
+
+The global entry defaults to all ten sampling times. To run a subset, set
+`KKT_SOS_SAMPLE_TIMES` to comma-separated positive values, such as
+`0.2,0.3,0.4`, and use a new `KKT_SOS_OUTPUT_SUFFIX`; restore or clear the
+sampling override afterward. With no sampling override, the paper entry
+runs all 20 configurations.
+
+The old `kkt_global_paper_scaled20_5_results.csv` is retained as the original
+nominal-QP reference, alongside the historical environment/regression records
+above. It is not the reference for the corrected controller. New KKT reruns
+use the default `_scaled20_5_qp4dp` suffix, or a caller-supplied
+`KKT_SOS_OUTPUT_SUFFIX`; the wrapper restores the previous environment.
+The other reference CSVs and original submission snapshots are unchanged.
+
+## HMPC reference verification
+
+The standard-library Python entry follows the HMPC CT-reference/Euler/sampling
+proof and closes the actual feedback difference through the original input
+history criterion. From the package root:
+
+```text
+python -B src/hmpc/verify_hmpc_original_conditions.py --profile higher_period --check results/reference/hmpc_original_conditions_higher_period.json
+```
+
+It verifies each fixed 0<h<=.13 s and every original-coordinate initial state
+with ||x0||2<=.0195; with no external disturbance the complete continuous-time
+ZOH trajectory converges to zero. On the ten-point paper grid, only h=.1 is
+covered by this witness. The profile also permits input disturbance up to
+.00003. The `balanced` and `higher_disturbance` profiles have period bounds
+.12/.11 and input bounds .00025/.0005, with matching result filenames.
+These are fixed-reference sufficient inner ranges, not maximum HMPC ranges.
+The actual QP/PWA data, reference cost/terminal set and controller are retained.
+
+The separate ten-point sampled-map Lyapunov calculation is still reproduced by:
+
+```text
+python -B src/hmpc/verify_hmpc_reference.py --check results/reference/hmpc_reference_scope_results.json
+```
+
+That entry verifies additional local results at all ten tested periods and
+the fixed-reference 2.08 terminal-feasibility ceiling. Its ten-point W(h)
+argument is not the original HMPC sampling proof. Read
+[HMPC_reference_verification.md](HMPC_reference_verification.md) for the full
+source mapping, 3h actual-error closure, paired disturbance ranges and domain
+interpretation. Both entries need only Python 3 standard library; they do not
+run MATLAB, an SDP, trajectories or network services.
+
 ## Random seeds
 
 The KKT routine fixes the finite-point closed-loop diagnostic seed to `7`
@@ -182,7 +274,7 @@ or parallel-runtime differences.
 
 ## Interpretation
 
-The results concern fixed values of the control sampling time. They are
+The SOS/LMI results concern fixed values of the control sampling time. They are
 floating-point numerical candidates and associated diagnostics, not a
 certificate over a continuous interval of sampling times or an exact rational
 certificate. Solver infeasibility, an inconclusive diagnostic, or the lack of
@@ -194,13 +286,17 @@ its bounded-analysis-domain scope differs from the selected study and no final
 runnable implementation was used as a paper baseline. The package likewise
 does not include internal TDO/PGD diagnostics.
 
+The HMPC entry separately checks rational identities and inequalities for
+the local reference calculation; its mathematical scope and added proof
+steps are stated in the companion technical note.
+
 ## Layout
 
 ```text
 data/double_integrator/   shared plant and seven-region PWA controller data
-src/                      one implementation directory per included approach
-tests/                    unit tests for the proposed route
-results/reference/        four committed paper-reference CSV files
+src/                      MATLAB approaches and portable HMPC Python checkers
+tests/                    Rev3 and numerical-QP consistency tests
+results/reference/        current and historical CSVs; HMPC JSON witnesses
 results/generated/        local rerun output, ignored by Git
 ```
 

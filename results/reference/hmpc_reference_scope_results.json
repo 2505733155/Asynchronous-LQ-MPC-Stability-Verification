@@ -1,0 +1,443 @@
+{
+  "date": "2026-11-09",
+  "classification": "Separate local sampled-map Lyapunov/feedback-error proof with auxiliary ACC/arXiv HMPC reference calculations (C in independent review). Original-HMPC ten-point sampling certification is not established.",
+  "reference": {
+    "Q": [
+      [
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0001
+      ]
+    ],
+    "R": 0.1,
+    "T": 2,
+    "N_current": 2,
+    "prediction_step_current": 1,
+    "terminal_P": [
+      [
+        2.1429023470226376,
+        1.2245640609262458
+      ],
+      [
+        1.2245640609262458,
+        1.3995571393121802
+      ]
+    ],
+    "terminal_rho": 0.003,
+    "terminal_residual": [
+      [
+        -13.995571393121782,
+        -14.995571393121791
+      ],
+      [
+        -14.995571393121791,
+        -17.13837374014444
+      ]
+    ],
+    "terminal_input_max_squared": 0.4198671417936541,
+    "CT_gain_interval": [
+      [
+        -3.1973074736068856,
+        -3.1973074736068856
+      ],
+      [
+        -2.5484495015696402,
+        -2.5484495015696402
+      ]
+    ],
+    "CT_gain_wide_verified_boxes": [
+      [
+        -3.197309,
+        -3.197306
+      ],
+      [
+        -2.548451,
+        -2.548448
+      ]
+    ],
+    "Hamiltonian_Taylor_remainder_bound": 2.9390319677932963e-87,
+    "discrete_N2_gain": [
+      -0.816562685446818,
+      -1.7498807770434979
+    ]
+  },
+  "actual": {
+    "ideal_rounded_QP": [
+      -0.8158015957845564,
+      -1.7493027931180318
+    ],
+    "stored_PWA": [
+      -0.815801595784556,
+      -1.749302793118031
+    ]
+  },
+  "error_and_small_gain": {
+    "weighted_state_metric": [
+      [
+        5.671668466608456,
+        1.9027150320582458
+      ],
+      [
+        1.9027150320582458,
+        0.638428623648853
+      ]
+    ],
+    "CT_ISS_gain_upper": 0.88,
+    "reference_discretization_error_upper": 1.01,
+    "reference_small_gain_product": 0.8888,
+    "actual_total_error_upper": 1.01,
+    "reference_to_actual_error_upper": 0.04,
+    "reference_closed_ISS_gain_upper": 7.913669064748201,
+    "actual_reference_error_small_gain_product": 0.31654676258992803,
+    "reference_to_actual_Euclidean_error_upper": 0.001,
+    "CT_small_gain_valid_initial_ball": 1e-12,
+    "CT_small_gain_valid_input_bound": 1e-09,
+    "common_inactive_ball_radius": 5e-05,
+    "family_statement": "For all N>=2: uniform inactive domain, positive CT/DT quadratic Hessians, Euler Riccati consistency with O(T/N) first-input convergence; see HMPC_reference_verification.md."
+  },
+  "sampling_quantification": {
+    "method": "Rational W(h) family, exact Lyapunov identities and Bernstein positivity on h in [0,1], followed by explicit reference-to-actual feedback-error robustness and complete ZOH input-disturbance bounds.",
+    "uniform_W_lower": 0.33,
+    "uniform_W_upper": 3.1,
+    "Bernstein_checks": {
+      "denominator": [
+        true,
+        100,
+        3
+      ],
+      "lower_bound": [
+        true,
+        100,
+        5
+      ],
+      "upper_bound": [
+        true,
+        100,
+        5
+      ]
+    },
+    "W_denominator_power_coefficients": [
+      "368681983564339749009372724735450356022879325354110892864249928/64505082304720271960703233652850892354310550935441111608031241",
+      "-3281636738393520500099282957122663694880858820463298527110958550199268780703709583340579194610/518072930167982454665775388446933864679106149658781886857014908289806801263490321334057919461",
+      "604475107211222856990949196786877920330949913594276640673053100155005692194763735168115838922/518072930167982454665775388446933864679106149658781886857014908289806801263490321334057919461"
+    ],
+    "W_numerator_power_coefficients": [
+      [
+        [
+          "586405387395906155181614475059134324647092747235972339296374892/64505082304720271960703233652850892354310550935441111608031241",
+          "-4860990488129721238849081265902675434610797526459196515720554616431272094594619124176810872454/518072930167982454665775388446933864679106149658781886857014908289806801263490321334057919461",
+          "1577452172004505942191799847787614771448998691269316445107172098136838437815527710170289597305/1036145860335964909331550776893867729358212299317563773714029816579613602526980642668115838922"
+        ],
+        [
+          "28108354542513664918628507549684/8031505606343076690407126887421",
+          "-447712240775534697957720062431797813093449244564406504472281169/64505082304720271960703233652850892354310550935441111608031241",
+          "2430495244064860619424540632951337717305398763229598257860277308215636047297309562088405436227/518072930167982454665775388446933864679106149658781886857014908289806801263490321334057919461",
+          "-1577452172004505942191799847787614771448998691269316445107172098136838437815527710170289597305/2072291720671929818663101553787735458716424598635127547428059633159227205053961285336231677844"
+        ]
+      ],
+      [
+        [
+          "28108354542513664918628507549684/8031505606343076690407126887421",
+          "-447712240775534697957720062431797813093449244564406504472281169/64505082304720271960703233652850892354310550935441111608031241",
+          "2430495244064860619424540632951337717305398763229598257860277308215636047297309562088405436227/518072930167982454665775388446933864679106149658781886857014908289806801263490321334057919461",
+          "-1577452172004505942191799847787614771448998691269316445107172098136838437815527710170289597305/2072291720671929818663101553787735458716424598635127547428059633159227205053961285336231677844"
+        ],
+        [
+          "29179466784879507918628507549684/8031505606343076690407126887421",
+          "-42162531813770497377942761324526/8031505606343076690407126887421",
+          "301110893926558159162316443667014231931676057755413419648187446/64505082304720271960703233652850892354310550935441111608031241",
+          "-2430495244064860619424540632951337717305398763229598257860277308215636047297309562088405436227/1036145860335964909331550776893867729358212299317563773714029816579613602526980642668115838922",
+          "1577452172004505942191799847787614771448998691269316445107172098136838437815527710170289597305/4144583441343859637326203107575470917432849197270255094856119266318454410107922570672463355688"
+        ]
+      ]
+    ],
+    "feedback_error_loss_per_h_upper": 0.039066975,
+    "actual_decay_per_h_lower": 0.95,
+    "sample_contraction_upper": "1-0.15*h",
+    "intersample_norm_factor_upper": 4.2,
+    "full_trajectory_ISS_bound": "||x(t)||_2 <=16 exp(-0.15 t)||x(0)||_2+135||delta||_infinity",
+    "ISS_initial_ball_radius": 2.5e-06,
+    "ISS_input_disturbance_max": 5e-08,
+    "zero_disturbance_ellipsoid_level": 4e-11,
+    "zero_disturbance_safe_ball_radius": 3.5e-06,
+    "domain_scope": "original numerical position/velocity coordinates; conservative local inner domains, not maximum ROA",
+    "ten_points": [
+      {
+        "Tsc": 0.1,
+        "reference_ZOH_ISS_quantified": true,
+        "actual_reference_error_pass": {
+          "ideal_rounded_QP": true,
+          "stored_PWA": true
+        },
+        "W": [
+          [
+            1.6034795534303459,
+            0.5598668328154557
+          ],
+          [
+            0.5598668328154557,
+            0.6188979755868516
+          ]
+        ],
+        "W_equation": "Mref(h)^T W(h) Mref(h)-W(h)=-h I",
+        "actual_decrease_lower_bound": 0.095,
+        "ISS_initial_ball_radius": 2.5e-06,
+        "ISS_input_disturbance_max": 5e-08,
+        "zero_disturbance_ellipsoid_level": 4e-11
+      },
+      {
+        "Tsc": 0.2,
+        "reference_ZOH_ISS_quantified": true,
+        "actual_reference_error_pass": {
+          "ideal_rounded_QP": true,
+          "stored_PWA": true
+        },
+        "W": [
+          [
+            1.6183742363319888,
+            0.5101224541271969
+          ],
+          [
+            0.5101224541271969,
+            0.6121339377578325
+          ]
+        ],
+        "W_equation": "Mref(h)^T W(h) Mref(h)-W(h)=-h I",
+        "actual_decrease_lower_bound": 0.19,
+        "ISS_initial_ball_radius": 2.5e-06,
+        "ISS_input_disturbance_max": 5e-08,
+        "zero_disturbance_ellipsoid_level": 4e-11
+      },
+      {
+        "Tsc": 0.3,
+        "reference_ZOH_ISS_quantified": true,
+        "actual_reference_error_pass": {
+          "ideal_rounded_QP": true,
+          "stored_PWA": true
+        },
+        "W": [
+          [
+            1.6358611088457515,
+            0.464054799593341
+          ],
+          [
+            0.464054799593341,
+            0.6168213443023539
+          ]
+        ],
+        "W_equation": "Mref(h)^T W(h) Mref(h)-W(h)=-h I",
+        "actual_decrease_lower_bound": 0.285,
+        "ISS_initial_ball_radius": 2.5e-06,
+        "ISS_input_disturbance_max": 5e-08,
+        "zero_disturbance_ellipsoid_level": 4e-11
+      },
+      {
+        "Tsc": 0.4,
+        "reference_ZOH_ISS_quantified": true,
+        "actual_reference_error_pass": {
+          "ideal_rounded_QP": true,
+          "stored_PWA": true
+        },
+        "W": [
+          [
+            1.6569044113979159,
+            0.4231485445009136
+          ],
+          [
+            0.4231485445009136,
+            0.635227716355978
+          ]
+        ],
+        "W_equation": "Mref(h)^T W(h) Mref(h)-W(h)=-h I",
+        "actual_decrease_lower_bound": 0.38,
+        "ISS_initial_ball_radius": 2.5e-06,
+        "ISS_input_disturbance_max": 5e-08,
+        "zero_disturbance_ellipsoid_level": 4e-11
+      },
+      {
+        "Tsc": 0.5,
+        "reference_ZOH_ISS_quantified": true,
+        "actual_reference_error_pass": {
+          "ideal_rounded_QP": true,
+          "stored_PWA": true
+        },
+        "W": [
+          [
+            1.6830582119866078,
+            0.3898120502130957
+          ],
+          [
+            0.3898120502130957,
+            0.6710652246546566
+          ]
+        ],
+        "W_equation": "Mref(h)^T W(h) Mref(h)-W(h)=-h I",
+        "actual_decrease_lower_bound": 0.475,
+        "ISS_initial_ball_radius": 2.5e-06,
+        "ISS_input_disturbance_max": 5e-08,
+        "zero_disturbance_ellipsoid_level": 4e-11
+      },
+      {
+        "Tsc": 0.6,
+        "reference_ZOH_ISS_quantified": true,
+        "actual_reference_error_pass": {
+          "ideal_rounded_QP": true,
+          "stored_PWA": true
+        },
+        "W": [
+          [
+            1.7170079726668617,
+            0.36822800564790586
+          ],
+          [
+            0.36822800564790586,
+            0.7308265454787909
+          ]
+        ],
+        "W_equation": "Mref(h)^T W(h) Mref(h)-W(h)=-h I",
+        "actual_decrease_lower_bound": 0.57,
+        "ISS_initial_ball_radius": 2.5e-06,
+        "ISS_input_disturbance_max": 5e-08,
+        "zero_disturbance_ellipsoid_level": 4e-11
+      },
+      {
+        "Tsc": 0.7,
+        "reference_ZOH_ISS_quantified": true,
+        "actual_reference_error_pass": {
+          "ideal_rounded_QP": true,
+          "stored_PWA": true
+        },
+        "W": [
+          [
+            1.7638453904783955,
+            0.3663563481611552
+          ],
+          [
+            0.3663563481611552,
+            0.8269313852221192
+          ]
+        ],
+        "W_equation": "Mref(h)^T W(h) Mref(h)-W(h)=-h I",
+        "actual_decrease_lower_bound": 0.665,
+        "ISS_initial_ball_radius": 2.5e-06,
+        "ISS_input_disturbance_max": 5e-08,
+        "zero_disturbance_ellipsoid_level": 4e-11
+      },
+      {
+        "Tsc": 0.8,
+        "reference_ZOH_ISS_quantified": true,
+        "actual_reference_error_pass": {
+          "ideal_rounded_QP": true,
+          "stored_PWA": true
+        },
+        "W": [
+          [
+            1.8345731888204544,
+            0.4014415001205871
+          ],
+          [
+            0.4014415001205871,
+            0.9863799058078141
+          ]
+        ],
+        "W_equation": "Mref(h)^T W(h) Mref(h)-W(h)=-h I",
+        "actual_decrease_lower_bound": 0.76,
+        "ISS_initial_ball_radius": 2.5e-06,
+        "ISS_input_disturbance_max": 5e-08,
+        "zero_disturbance_ellipsoid_level": 4e-11
+      },
+      {
+        "Tsc": 0.9,
+        "reference_ZOH_ISS_quantified": true,
+        "actual_reference_error_pass": {
+          "ideal_rounded_QP": true,
+          "stored_PWA": true
+        },
+        "W": [
+          [
+            1.9582651531839403,
+            0.519121358356156
+          ],
+          [
+            0.519121358356156,
+            1.2807813010496898
+          ]
+        ],
+        "W_equation": "Mref(h)^T W(h) Mref(h)-W(h)=-h I",
+        "actual_decrease_lower_bound": 0.855,
+        "ISS_initial_ball_radius": 2.5e-06,
+        "ISS_input_disturbance_max": 5e-08,
+        "zero_disturbance_ellipsoid_level": 4e-11
+      },
+      {
+        "Tsc": 1.0,
+        "reference_ZOH_ISS_quantified": true,
+        "actual_reference_error_pass": {
+          "ideal_rounded_QP": true,
+          "stored_PWA": true
+        },
+        "W": [
+          [
+            2.2452686875623518,
+            0.8927503181315575
+          ],
+          [
+            0.8927503181315575,
+            1.982439775369027
+          ]
+        ],
+        "W_equation": "Mref(h)^T W(h) Mref(h)-W(h)=-h I",
+        "actual_decrease_lower_bound": 0.95,
+        "ISS_initial_ball_radius": 2.5e-06,
+        "ISS_input_disturbance_max": 5e-08,
+        "zero_disturbance_ellipsoid_level": 4e-11
+      }
+    ]
+  },
+  "terminal_scope_bound": {
+    "fixed_reference": "T_H=2, Qc=diag(1,1e-4), Rc=.1, Pc as supplied, |u|<=1.",
+    "free_choices": "Any terminal set and terminal feedback satisfying the published terminal decrease and admissibility conditions.",
+    "necessary_polynomial_coefficients": [
+      "7510418754971521/500000000000000",
+      "-128022777935027403/2500000000000000",
+      "12980192520170241/312500000000000"
+    ],
+    "positive_root_interval": [
+      "32947923206820564390394895511667/15845632502852867518708790067200",
+      "8236980801705141097598723877917/3961408125713216879677197516800"
+    ],
+    "root_approximation": 2.079306282086788,
+    "centered_ball_radius_strict_upper_bound": 2.08,
+    "excluded_initial_state": [
+      0,
+      2.08
+    ],
+    "minimum_terminal_residual_at_witness": 0.007816225619548813,
+    "scope": "This is an auxiliary-reference feasibility restriction. It is not instability of the actual controller, an outer radius of every admissible domain, or an upper bound across arbitrary continuous reference designs."
+  },
+  "theory_source": {
+    "primary": "Gautam and Nicotra, Stability Analysis of Hypersampled Model Predictive Control, arXiv:2310.02623v1 / ACC 2024, DOI 10.23919/ACC60939.2024.10644911",
+    "published_steps": "CT reference assumptions; state-proportional discretization error and convergence; small gain; existence of sufficiently fast sampled-data implementation.",
+    "additional_quantification": "LQ regularity/Euler convergence argument; rational CT gain enclosure; weighted gains; exact ZOH Lyapunov family; state-dependent actual-feedback error closure. These steps are derived in the companion technical note, not quoted as formulas from the paper."
+  },
+  "original_HMPC_ten_point_certification": false,
+  "sampling_theory_bridge": "Unresolved: Teel--Nesic--Kokotovic CDC 1998 Theorem 2 conditions and their link to W(h) have not been established. PASS is arithmetic/local stability evidence, not original-theory acceptance.",
+  "literal_scope": "Auxiliary reference structural/regularity/convergence arguments and continuous-update small-gain calculations are provided. Actual feedback is retained via explicit state-dependent error bounds. The ten sampled-data values use a separate exact-hold-map Lyapunov proof. Their attribution to the original HMPC sampling theorem is unverified; the local proof and fixed-reference feasibility bound do not resolve that provenance gap.",
+  "sources": [
+    {
+      "path": "data/double_integrator/double_integrator_qp_data.m",
+      "sha256": "94c2f617828e02b5ad66f3eea59368392ecbdab3d31f967fb888cdc65aab0219"
+    },
+    {
+      "path": "data/double_integrator/answer_regions_input_only_legacy.m",
+      "sha256": "2e8a7b3e8831c6a2b454b6e6dfec8a1e4228a4f00642a00364092766aa92ced3"
+    },
+    {
+      "path": "src/hmpc/verify_hmpc_reference.py",
+      "sha256": "d5b711e35aa35d5bff7f21bf783b57e921d5ae9ea2439600809b937383881d48"
+    }
+  ]
+}

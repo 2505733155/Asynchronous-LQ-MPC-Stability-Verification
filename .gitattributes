@@ -1,0 +1,49 @@
+# Keep the public package byte-identical when used as its own Git repository.
+# No custom filters: preserve current source/data EOLs for SHA-256 checks.
+.gitattributes text eol=lf
+.gitignore text eol=lf
+HMPC_reference_verification.md text eol=lf
+LICENSE text eol=lf
+README.md text eol=crlf
+data/double_integrator/answer_regions.m -text whitespace=cr-at-eol
+data/double_integrator/answer_regions_input_only_legacy.m text eol=lf
+data/double_integrator/build_time_delay_data.m text eol=lf
+data/double_integrator/double_integrator_qp_data.m text eol=lf
+data/double_integrator/qp4dp_result_suffix.m text eol=lf
+data/double_integrator/solve_double_integrator_box_qp.m text eol=lf
+data/double_integrator/validate_double_integrator_data.m text eol=lf
+results/reference/hmpc_reference_scope_results.json text eol=crlf
+results/reference/kkt_global_paper_scaled20_5_qp4dp_grid10_results.csv text eol=crlf
+results/reference/kkt_global_paper_scaled20_5_qp4dp_results.csv text eol=crlf
+results/reference/kkt_global_paper_scaled20_5_results.csv text eol=crlf
+results/reference/proposed_rev3_paper_results.csv text eol=crlf
+results/reference/pwq_paper_margin_sweep_results.csv text eol=lf
+results/reference/time_delay_paper_scaled20_5_results.csv text eol=crlf
+run_all_paper_cases.m text eol=lf
+src/hmpc/verify_hmpc_reference.py -text whitespace=cr-at-eol
+src/kkt/run_kkt_lifted_sos_standard_mpc.m text eol=crlf
+src/kkt/run_kkt_lifted_sos_standard_mpc_global_scaled20_5_attempt.m text eol=crlf
+src/proposed/functions/build_sos_problem_rev3.m text eol=crlf
+src/proposed/functions/independent_sos_postcheck_rev3.m text eol=lf
+src/proposed/functions/verify_forward_invariance_union_rev3.m text eol=crlf
+src/proposed/run_region_piecewise_polynomial_sos_rev3.m -text whitespace=cr-at-eol
+src/proposed/run_rev3_unbounded_final_physdense.m text eol=lf
+src/pwq/run_pwq_rev1_mosek_paper_margin_sweep.m text eol=lf
+src/pwq/run_region_piecewise_lyapunov_sdp_rev1.m -text whitespace=cr-at-eol
+src/time_delay/compute_tau_max_di_mpc_strong_adj_scan.m -text whitespace=cr-at-eol
+src/time_delay/run_time_delay_mosek_scaled_diag.m text eol=lf
+src/time_delay/theorem1_feasible_case_general_polytope.m text eol=crlf
+tests/ForwardInvarianceOracleRev3Test.m -text whitespace=cr-at-eol
+tests/SosBasisRev3Test.m text eol=lf
+tests/SosPostcheckGramBindingRev3Test.m text eol=lf
+tests/run_forward_invariance_tests_rev3.m text eol=lf
+tests/run_sos_basis_tests_rev3.m text eol=lf
+tests/run_sos_postcheck_tests_rev3.m text eol=lf
+tests/test_double_integrator_qp_data.m text eol=lf
+tests/test_kkt_wrapper_environment.m text eol=lf
+
+# Original-proof HMPC witness inputs, independent of private materials.
+src/hmpc/verify_hmpc_original_conditions.py text eol=lf
+results/reference/hmpc_original_conditions_higher_disturbance.json text eol=lf
+results/reference/hmpc_original_conditions_balanced.json text eol=lf
+results/reference/hmpc_original_conditions_higher_period.json text eol=lf

@@ -30,3 +30,10 @@ suite = [suite, matlab.unittest.TestSuite.fromClass(?SosBasisRev3Test), ...
 results = run(suite);
 assert(all([results.Passed]), 'One or more quick tests failed.')
 ```
+# Numerical-QP consistency checks
+
+Run `test_double_integrator_qp_data` after adding this test directory to the
+MATLAB path. It checks controller matrices, F orientation, safe corrected-QP
+output suffixes, and independent box-QP KKT/legacy-input comparisons.
+`test_kkt_wrapper_environment` checks the fixed-scaling wrapper on normal and
+controlled error exits using an isolated copy and no SDP solve.

@@ -1,19 +1,19 @@
 %% KKT-lifted SOS certificate for sampled standard MPC
 % First implementation of the Korda-Jones KKT/SOS route for the online QP
-% standard MPC defined by the package-local seven-region PWA data.
+% numerical QP matching the package-local seven-region PWA data.
 %
 % By default the script searches local compact-domain sampled-point SOS
 % decrease certificates. When KKT_SOS_GLOBAL_ATTEMPT=1, it runs a direct
 % noncompact full-space comparison attempt. Neither mode proves continuous
 % inter-sample stability.
 
-clear; clc;
+clc; % Preserve the calling wrapper environment and its cleanup guard.
 
-cfg = make_cfg();
 script_dir = get_script_dir();
 release_root = find_release_root(script_dir);
 addpath(script_dir);
 addpath(fullfile(release_root, 'data', 'double_integrator'));
+cfg = make_cfg();
 ensure_yalmip_export_precedence();
 configure_mosek_path(cfg);
 ensure_matlab_linprog_precedence();
@@ -80,7 +80,7 @@ cfg.alpha = 1e-6;
 cfg.domain_x1 = [-15, 15];
 cfg.domain_x2 = [-6, 6];
 cfg.domain_profile = "baseline_box";
-cfg.output_suffix = "";
+cfg.output_suffix = "_qp4dp";
 cfg.kkt_mode = "exact";
 cfg.relaxed_delta = NaN;
 cfg.certificate_claim_mode = "sos_decrease_no_invariance";
@@ -152,8 +152,8 @@ if strcmp(getenv('KKT_SOS_GLOBAL_ATTEMPT'), '1')
     cfg.global_attempt_mode = true;
     cfg.noncompact_lifted_set = true;
     cfg.analysis_domain = "R2";
-    cfg.run_label = "global_attempt_Ts_1_0p1_dV2_4_exact_kkt";
-    cfg.sample_times = [1.0, 0.1];
+    cfg.run_label = "global_attempt_grid10_dV2_4_exact_kkt";
+    cfg.sample_times = 0.1:0.1:1.0;
     cfg.dV_values = [2, 4];
     cfg.certificate_claim_mode = "global_sampled_asymptotic";
     cfg.require_invariance_for_status = false;
@@ -164,6 +164,17 @@ if strcmp(getenv('KKT_SOS_GLOBAL_ATTEMPT'), '1')
     cfg.roa_bisection_steps = 0;
 end
 
+env_sample_times = getenv('KKT_SOS_SAMPLE_TIMES');
+if ~isempty(env_sample_times)
+    values = str2double(strsplit(env_sample_times, ',', 'CollapseDelimiters', false));
+    if any(~isfinite(values)) || any(values <= 0) || numel(unique(values)) ~= numel(values)
+        error('kkt:InvalidSampleTimes', ...
+            'KKT_SOS_SAMPLE_TIMES must contain distinct positive finite numbers separated by commas.');
+    end
+    cfg.sample_times = values;
+    cfg.run_label = "custom_sampling_dV" + join(string(cfg.dV_values), "_") + "_exact_kkt";
+end
+
 env_domain_profile = getenv('KKT_SOS_DOMAIN_PROFILE');
 if ~isempty(env_domain_profile) && ~cfg.global_attempt_mode
     cfg.domain_profile = string(env_domain_profile);
@@ -171,9 +182,7 @@ if ~isempty(env_domain_profile) && ~cfg.global_attempt_mode
 end
 
 env_output_suffix = getenv('KKT_SOS_OUTPUT_SUFFIX');
-if ~isempty(env_output_suffix)
-    cfg.output_suffix = string(env_output_suffix);
-end
+cfg.output_suffix = qp4dp_result_suffix(env_output_suffix);
 
 env_sos_scale = getenv('KKT_SOS_SCALE');
 if ~isempty(env_sos_scale)
@@ -370,7 +379,7 @@ try
             row.failure_stage = "tolerance_only";
         elseif strict_pass || tol_pass
             row.certificate_status = "inconclusive_global_attempt";
-            row.failure_stage = "quadprog_sanity_failed";
+            row.failure_stage = "qp_sanity_failed";
         else
             row.certificate_status = "inconclusive_global_attempt";
             row.failure_stage = "sos_postcheck_failed";
@@ -1108,22 +1117,7 @@ end
 
 
 function [U, ok] = solve_box_qp(x, mpc)
-ok = true;
-try
-    opts = optimoptions('quadprog', 'Display', 'off');
-    [U, ~, exitflag] = quadprog(mpc.H, mpc.F * x, [], [], [], [], ...
-        mpc.u_min * ones(mpc.N, 1), mpc.u_max * ones(mpc.N, 1), [], opts);
-catch
-    try
-        [U, ~, exitflag] = quadprog(mpc.H, mpc.F * x, [], [], [], [], ...
-            mpc.u_min * ones(mpc.N, 1), mpc.u_max * ones(mpc.N, 1));
-    catch
-        U = NaN(mpc.N, 1);
-        ok = false;
-        return;
-    end
-end
-ok = ok && ~isempty(U) && exitflag > 0;
+[U, ok] = solve_double_integrator_box_qp(x, mpc);
 end
 
 
@@ -1254,67 +1248,16 @@ end
 
 
 function mpc = build_standard_mpc_data()
-mpc.Ad = [1 1; 0 1];
-mpc.Bd = [0; 1];
+mpc = double_integrator_qp_data();
+mpc.Ad = mpc.nominal.Ap;
+mpc.Bd = mpc.nominal.Bp;
 mpc.C = [1 0];
-mpc.Q = mpc.C' * mpc.C;
-mpc.R = 0.1;
-mpc.N = 2;
-mpc.u_min = -1;
-mpc.u_max = 1;
-if exist('dare', 'file') == 2
-    mpc.P = dare(mpc.Ad, mpc.Bd, mpc.Q, mpc.R);
-else
-    mpc.P = solve_dare_fixed_point(mpc.Ad, mpc.Bd, mpc.Q, mpc.R);
-end
-mpc.P = 0.5 * (mpc.P + mpc.P');
-[mpc.H, mpc.F] = build_condensed_qp_matrices(mpc);
-mpc.H = 0.5 * (mpc.H + mpc.H');
+mpc.Q = mpc.nominal.Q;
+mpc.R = mpc.nominal.R;
+mpc.F = mpc.Fux; % KKT stationarity uses input-by-state orientation.
 mpc.H_sigma_max = max(svd(mpc.H));
 mpc.H_normalized = mpc.H / mpc.H_sigma_max;
 mpc.F_normalized = mpc.F / mpc.H_sigma_max;
-end
-
-
-function P = solve_dare_fixed_point(A, B, Q, R)
-P = Q;
-for iter = 1:10000
-    P_next = A' * P * A - A' * P * B * ((R + B' * P * B) \ (B' * P * A)) + Q;
-    P_next = 0.5 * (P_next + P_next');
-    if norm(P_next - P, 'fro') <= 1e-13
-        P = P_next;
-        return;
-    end
-    P = P_next;
-end
-error('Fixed-point DARE iteration did not converge.');
-end
-
-
-function [H, F] = build_condensed_qp_matrices(mpc)
-n = size(mpc.Ad, 1);
-N = mpc.N;
-H = zeros(N, N);
-F = zeros(N, n);
-for k = 0:N-1
-    [Phi_k, Gamma_k] = prediction_matrices(mpc.Ad, mpc.Bd, N, k);
-    H = H + 2 * (Gamma_k' * mpc.Q * Gamma_k);
-    F = F + 2 * (Gamma_k' * mpc.Q * Phi_k);
-    H(k+1,k+1) = H(k+1,k+1) + 2 * mpc.R;
-end
-[Phi_N, Gamma_N] = prediction_matrices(mpc.Ad, mpc.Bd, N, N);
-H = H + 2 * (Gamma_N' * mpc.P * Gamma_N);
-F = F + 2 * (Gamma_N' * mpc.P * Phi_N);
-end
-
-
-function [Phi, Gamma] = prediction_matrices(A, B, N, k)
-n = size(A, 1);
-Phi = A^k;
-Gamma = zeros(n, N);
-for j = 1:min(k, N)
-    Gamma(:,j) = A^(k-j) * B;
-end
 end
 
 
@@ -1323,7 +1266,7 @@ precheck = struct();
 precheck.H_min_eig = min(eig(0.5 * (mpc.H + mpc.H')));
 precheck.box_nonempty = all(mpc.u_min < mpc.u_max);
 precheck.origin_qp_equilibrium = norm(mpc.F * [0; 0]) <= 1e-12;
-tool_names = {'sdpvar','sos','solvesos','polynomial','coefficients','quadprog'};
+tool_names = {'sdpvar','sos','solvesos','polynomial','coefficients'};
 missing = strings(0, 1);
 for kk = 1:numel(tool_names)
     if isempty(which(tool_names{kk}))
@@ -1339,6 +1282,8 @@ end
 function row = base_row(Ts, dV, cfg, precheck)
 row = struct();
 row.Ts = Ts;
+row.qp_source = "hybtbx_normalized_qp_4dp";
+row.qp_postcheck_solver = "nine_pattern_box_kkt";
 row.d_V = dV;
 row.epsilon = cfg.epsilon;
 row.alpha = cfg.alpha;
